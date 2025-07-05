@@ -6,12 +6,15 @@ import com.google.gson.Gson;
 
 import java.util.Map;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Principal {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ConsultaMoneda consulta = new ConsultaMoneda();
         Gson gson = new Gson(); //Convertir Json en objeto Java
+        List<String>historial = new ArrayList<>();
 
         System.out.println("===== CONVERSOR DE MONEDAS =====");
         //Lista simple de monedas admitidas
@@ -54,7 +57,7 @@ public class Principal {
 
                 //Verificar si la moneda de destino existe
                 if (!tasas.containsKey(monedaDestino)) {
-                    System.out.println("❌ Moneda de destino no válida.");
+                    System.out.println("❌ HistorialConversion de destino no válida.");
                     continue;
                 }
                 //Realizar conversion
@@ -64,6 +67,9 @@ public class Principal {
                 //Mostrar resultado
                 System.out.printf("💱 %.2f %s equivale a %.2f %s\n",
                         monto, monedaBase, convertido, monedaDestino);
+
+                String registro = String.format("%.2f %s => %.2f %s", monto, monedaBase, convertido, monedaDestino);
+                historial.add(registro);
             } catch (Exception e) {
                 System.out.println("❌ Error al obtener los datos: " + e.getMessage());
             }
