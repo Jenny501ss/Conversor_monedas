@@ -1,11 +1,16 @@
 package Modelo;
 
+import Servicio.NombreMonedas;
+
 public record Conversion(String origen,
                          String destino,
                          double monto,
                          double resultado) {
     @Override
     public String toString(){
-        return "%.2f %s => %.2f %s".formatted(monto,origen,resultado,destino);
+        String nombreOrigen = NombreMonedas.nombres.getOrDefault(origen, "Desconocido");
+        String nombreDestino = NombreMonedas.nombres.getOrDefault(destino, "Desconocido");
+
+        return "%.2f %s (%s) => %.2f %s (%s)".formatted(monto,origen,nombreOrigen,resultado,destino,nombreDestino);
     }
 }
