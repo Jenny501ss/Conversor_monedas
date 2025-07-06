@@ -40,13 +40,6 @@ ConversorDeMonedas/
 
 ---
 
-📡 API utilizada
-- Este proyecto utiliza la ExchangeRate API versión gratuita.
-- [Exchangerate](https://www.exchangerate-api.com/)
-- Registrate con tu correo, luego recibiras tu clave (API Key).
-
----
-
 ## ▶️ Cómo ejecutar el proyecto
 
 1. Clona el repositorio
@@ -59,12 +52,17 @@ git clone https://github.com/Jenny501ss/Conversor_monedas.git
 5. Abre la clase: src/Principal/Principal.java y ejecuta
 
 ---
+📡 API utilizada
+- Este proyecto utiliza la ExchangeRate API versión gratuita.
+- [Exchangerate](https://www.exchangerate-api.com/)
+- Registrate con tu correo, luego recibiras tu clave (API Key).
 
 📝 Licencia
-Este proyecto fue realizado con fines educativos como parte del challenge de Alura Latam.
+- Este proyecto fue realizado con fines educativos como parte del challenge de Alura Latam.
 
 👩‍💻 Autor
 - Jenny Joseline Mamani Choque
+
 
 - [LinkedIn](https://www.linkedin.com/in/jenny-joseline-mamani-choque-07963593/)
 - yenny501ss@gmail.com
