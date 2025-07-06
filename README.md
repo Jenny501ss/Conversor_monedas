@@ -45,6 +45,8 @@ ConversorDeMonedas/
 - [Exchangerate](https://www.exchangerate-api.com/)
 - Registrate con tu correo, luego recibiras tu clave (API Key).
 
+---
+
 ## ▶️ Cómo ejecutar el proyecto
 
 1. Clona el repositorio
