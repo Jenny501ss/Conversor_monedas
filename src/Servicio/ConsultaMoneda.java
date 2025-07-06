@@ -6,10 +6,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ConsultaMoneda {
-    public String obtenerDatos(String monedaBase) {
-        String apiKey = "4b4c8f908d931ed169b6ba86";
-        String url = "https://v6.exchangerate-api.com/v6/" + apiKey + "/latest/" + monedaBase;
-
+    private final String apiKey = "4b4c8f908d931ed169b6ba86";
+    public String obtenerDatos(String base) {
+        String url = "https://v6.exchangerate-api.com/v6/" + apiKey + "/latest/" + base;
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
