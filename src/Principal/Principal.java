@@ -1,79 +1,85 @@
 package Principal;
 
+import Modelo.Conversion;
 import Modelo.ConversionResultado;
+import Modelo.HistorialConversion;
 import Servicio.ConsultaMoneda;
+import Servicio.Conversor;
+import Servicio.IConversor;
 import com.google.gson.Gson;
 
-import java.util.Map;
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Principal {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        ConsultaMoneda consulta = new ConsultaMoneda();
-        Gson gson = new Gson(); //Convertir Json en objeto Java
-        List<String>historial = new ArrayList<>();
-
-        System.out.println("===== CONVERSOR DE MONEDAS =====");
-        //Lista simple de monedas admitidas
-        String[] monedasDisponibles = {"USD", "PEN", "EUR", "BRL", "COP", "CLP"};
+        IConversor conversor = new Conversor(new ConsultaMoneda());
+        HistorialConversion historial = new HistorialConversion();
+        Set<String> MonedasDisponibles = conversor instanceof Conversor c ? c.obtenerMonedasDisponibles("USD") :
+                Set.of();
 
         while (true) {
+            mostrarMenu();
+            String opcion = scanner.nextLine();
+
             //Mostrar opciones
-            System.out.println("\nMonedas disponibles: ");
-            for (String moneda : monedasDisponibles) {
-                System.out.println(moneda + " ");
-            }
-            System.out.println("\n(Escribe 'salir' en cualquier momento para terminar)");
-
-            //Pedir monedas base
-            System.out.println("Ingrese la moneda de origen (Ejm. USD): ");
-            String monedaBase = scanner.nextLine().toUpperCase();
-            if (monedaBase.equals("SALIR")) break;
-
-            //Pedir moneda destino
-            System.out.println("Ingrese la moneda de destino (Ejm. PEN): ");
-            String monedaDestino = scanner.nextLine().toUpperCase();
-            if (monedaDestino.equals("SALIR")) break;
-
-            //Pedir monto
-            System.out.println("Ingrese el monto a convertir: ");
-            double monto;
-            try {
-                monto = Double.parseDouble(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("❌ Monto inválido. Intenta de nuevo.");
-                continue;
-            }
-
-            //Consulta y conversion
-            try {
-                //Obtener datos de la API
-                String json = consulta.obtenerDatos(monedaBase);
-                ConversionResultado resultado = gson.fromJson(json, ConversionResultado.class);
-                Map<String, Double> tasas = resultado.getConversion_rates();
-
-                //Verificar si la moneda de destino existe
-                if (!tasas.containsKey(monedaDestino)) {
-                    System.out.println("❌ HistorialConversion de destino no válida.");
-                    continue;
+            switch (opcion) {
+                case "1" -> {
+                    System.out.println("\nMonedas disponibles: ");
+                    MonedasDisponibles.stream().sorted().forEach(m -> System.out.println(m + " "));
+                    System.out.println("\n");
                 }
-                //Realizar conversion
-                double tasa = tasas.get(monedaDestino);
-                double convertido = monto * tasa;
-
-                //Mostrar resultado
-                System.out.printf("💱 %.2f %s equivale a %.2f %s\n",
-                        monto, monedaBase, convertido, monedaDestino);
-
-                String registro = String.format("%.2f %s => %.2f %s", monto, monedaBase, convertido, monedaDestino);
-                historial.add(registro);
-            } catch (Exception e) {
-                System.out.println("❌ Error al obtener los datos: " + e.getMessage());
+                case "2" -> {
+                    System.out.println("Moneda de origen: ");
+                    String origen = scanner.nextLine().toUpperCase();
+                    if (!MonedasDisponibles.contains(origen)) {
+                        System.out.println("Moneda origen invalida.");
+                        continue;
+                    }
+                    System.out.println("Moneda origen: ");
+                    String destino = scanner.nextLine().toUpperCase();
+                    if (!MonedasDisponibles.contains(destino)) {
+                        System.out.println("Moneda origen invalida.");
+                        continue;
+                    }
+                    System.out.println("Monto: ");
+                    double monto;
+                    try {
+                        monto = Double.parseDouble(scanner.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Monto invalido.");
+                        continue;
+                    }
+                    try {
+                        Conversion conversion = conversor.convertir(origen, destino, monto);
+                        System.out.println("Resultado: " + conversion);
+                        historial.agregar(conversion);
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                }
+                case "3" -> historial.mostrar();
+                case "4" -> {
+                    historial.guardarComoTexto("historial_conversiones.txt");
+                    historial.guardarComoJson("historial_conversiones.json");
+                }
+                case "5" -> {
+                    System.out.println("Hasta Luego!!!");
+                    return;
+                }
+                default -> System.out.println("Opcion invalida.");
             }
         }
-        System.out.println("Gracias por usar el conversor!!!!!!!");
     }
-}
+        private static void mostrarMenu() {
+            System.out.println("""
+                    \n===== CONVERSOR DE MONEDAS =====
+                    1. Mostrar monedas disponibles
+                    2. Convertir monedas
+                    3. Ver historial de conversiones
+                    4. Guardar historial (TXT y JSON)
+                    5. Salir
+                    Selecciona una opción:
+                    """);
+        }
+    }
