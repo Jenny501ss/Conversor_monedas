@@ -1,12 +1,12 @@
 package Principal;
 
 import Modelo.Conversion;
-import Modelo.ConversionResultado;
 import Modelo.HistorialConversion;
 import Servicio.ConsultaMoneda;
 import Servicio.Conversor;
 import Servicio.IConversor;
-import com.google.gson.Gson;
+import Servicio.NombreMonedas;
+
 
 import java.util.*;
 
@@ -26,17 +26,20 @@ public class Principal {
             switch (opcion) {
                 case "1" -> {
                     System.out.println("\nMonedas disponibles: ");
-                    MonedasDisponibles.stream().sorted().forEach(m -> System.out.println(m + " "));
+                    MonedasDisponibles.stream().sorted().forEach(codigo ->{
+                        String nombre = NombreMonedas.nombres.getOrDefault(codigo,"(Nombre no disponible)");
+                        System.out.println("* " + codigo + " - "+nombre);
+                    });
                     System.out.println("\n");
                 }
                 case "2" -> {
-                    System.out.println("Moneda de origen: ");
+                    System.out.println("Moneda de origen (Ejm. PEN): ");
                     String origen = scanner.nextLine().toUpperCase();
                     if (!MonedasDisponibles.contains(origen)) {
                         System.out.println("Moneda origen invalida.");
                         continue;
                     }
-                    System.out.println("Moneda origen: ");
+                    System.out.println("Moneda de destino (Ejm. USD): ");
                     String destino = scanner.nextLine().toUpperCase();
                     if (!MonedasDisponibles.contains(destino)) {
                         System.out.println("Moneda origen invalida.");
@@ -64,7 +67,7 @@ public class Principal {
                     historial.guardarComoJson("historial_conversiones.json");
                 }
                 case "5" -> {
-                    System.out.println("Hasta Luego!!!");
+                    System.out.println("Gracias por usar nuestro Conversor de Monedas!!!");
                     return;
                 }
                 default -> System.out.println("Opcion invalida.");
