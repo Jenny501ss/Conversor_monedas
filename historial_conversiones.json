@@ -1,0 +1,34 @@
+[
+  {
+    "monto": 100.0,
+    "origen": "PEN",
+    "nombreOrigen": "Sol peruano",
+    "resultado": 28.15,
+    "destino": "USD",
+    "nombreDestino": "Dólar estadounidense"
+  },
+  {
+    "monto": 100.0,
+    "origen": "VES",
+    "nombreOrigen": "Bolívar venezolano",
+    "resultado": 3.1879999999999997,
+    "destino": "PEN",
+    "nombreDestino": "Sol peruano"
+  },
+  {
+    "monto": 100.0,
+    "origen": "BOB",
+    "nombreOrigen": "Boliviano",
+    "resultado": 51.43,
+    "destino": "PEN",
+    "nombreDestino": "Sol peruano"
+  },
+  {
+    "monto": 100.0,
+    "origen": "USD",
+    "nombreOrigen": "Dólar estadounidense",
+    "resultado": 692.26,
+    "destino": "BOB",
+    "nombreDestino": "Boliviano"
+  }
+]

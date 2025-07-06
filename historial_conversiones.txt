@@ -1,0 +1,4 @@
+100.00 PEN (Sol peruano) => 28.15 USD (Dólar estadounidense)
+100.00 VES (Bolívar venezolano) => 3.19 PEN (Sol peruano)
+100.00 BOB (Boliviano) => 51.43 PEN (Sol peruano)
+100.00 USD (Dólar estadounidense) => 692.26 BOB (Boliviano)
