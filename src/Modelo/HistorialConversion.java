@@ -2,11 +2,14 @@ package Modelo;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import Servicio.NombreMonedas;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class HistorialConversion {
     private final List<Conversion> historial =new ArrayList<>();
@@ -34,9 +37,25 @@ public class HistorialConversion {
     }
     public void guardarComoJson(String archivoJson){
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        List<Map<String,Object>> historialFormateado = new ArrayList<>();
+
+        for (Conversion conversion : historial){
+            String nombreOrigen = NombreMonedas.nombres.getOrDefault(conversion.origen(),"Desconocido");
+            String nombreDestino = NombreMonedas.nombres.getOrDefault(conversion.destino(),"Desconocido");
+
+            Map<String, Object> entrada = new LinkedHashMap<>();
+            entrada.put("monto", conversion.monto());
+            entrada.put("origen", conversion.origen());
+            entrada.put("nombreOrigen", nombreOrigen);
+            entrada.put("resultado", conversion.resultado());
+            entrada.put("destino", conversion.destino());
+            entrada.put("nombreDestino", nombreDestino);
+
+            historialFormateado.add(entrada);
+        }
         try(FileWriter writer = new FileWriter(archivoJson)) {
-            gson.toJson(historial,writer);
-            System.out.println("Historial gardado como JSON en: "+archivoJson);
+            gson.toJson(historialFormateado,writer);
+            System.out.println("Historial guardado como JSON en: "+archivoJson);
         }catch (IOException e){
             System.out.println("Error al guardar el historial JSON: "+e.getMessage());
         }
